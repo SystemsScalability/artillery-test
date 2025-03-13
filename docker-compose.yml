@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: cars_postgres_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      TZ: "UTC-4"
+    ports:
+      - 3737:3737
+    command: -p 3737
+    profiles:
+      - dev
+    env_file:
+      - .env
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: cars_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_LISTEN_PORT: ${PGADMIN_PORT}
+    ports:
+      - 4747:4747
+    depends_on:
+      - postgres
+    profiles:
+      - dev
+    env_file:
+      - .env
