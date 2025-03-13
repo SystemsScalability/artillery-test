@@ -1,0 +1,49 @@
+config:
+  target: '{{ $environment.API_BASE_URL }}'
+  phases:
+    - duration: 60
+      arrivalRate: 5
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+
+scenarios:
+  - flow:
+      - get:
+          url: '/cars'
+
+      - post:
+          url: '/cars'
+          json:
+            brand: 'Toyota'
+            model: 'Camry'
+            year: 2020
+            color: 'White'
+            engineType: 'Petrol'
+            price: 30000
+            mileage: 15000
+            description: 'A reliable sedan.'
+
+      - get:
+          url: '/cars/brand/Toyota'
+
+      - get:
+          url: '/cars/years?startYear=2015&endYear=2023'
+
+      - get:
+          url: '/cars/prices?minPrice=20000&maxPrice=40000'
+
+      - put:
+          url: '/cars/{{ carId }}'
+          json:
+            brand: 'Toyota'
+            model: 'Camry'
+            year: 2021
+            color: 'Black'
+            engineType: 'Petrol'
+            price: 32000
+            mileage: 12000
+            description: 'An updated reliable sedan.'
+
+      - delete:
+          url: '/cars/{{ carId }}'
